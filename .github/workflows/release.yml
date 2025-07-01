@@ -1,0 +1,26 @@
+name: Build and Release PDF
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger only on tags like v1.0, v2.0 etc.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build PDF
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+
+      - name: Upload PDF to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.n3d_token }}
