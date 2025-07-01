@@ -1,0 +1,141 @@
+\documentclass[openany,a4paper,8pt]{book}
+\raggedbottom
+\usepackage{titlesec}
+\usepackage{subcaption}
+\usepackage[top=1cm, bottom=1.5cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage{enumitem}
+\setlist{nosep}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+
+
+\titleformat{\chapter}[display]
+{\normalfont\large\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Large}
+\titlespacing*{\chapter}{0pt}{0pt}{5pt}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@makechapterhead}{\vspace*{50\p@}}{\vspace*{10\p@}}{}{}
+\makeatother
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[unicode, pdftex, colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+
+
+% Customizing chapter title color
+\titleformat{\chapter}[display]
+  {\normalfont\large\bfseries\color{blue}}   % Blue color for chapter
+  {\chaptertitlename\ \thechapter}{20pt}{\Large}
+\titlespacing*{\chapter}{0pt}{0pt}{5pt}
+
+% Customizing section title color
+\titleformat{\section}[hang]
+  {\normalfont\Large\bfseries\color{blue}}   % Blue color for section
+  {\thesection}{1em}{}
+% Customizing subsection title color
+\titleformat{\subsection}[hang]
+  {\normalfont\large\bfseries\color{blue}}  % Blue color for subsection
+  {\thesubsection}{1em}{}
+
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{caption}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+\tikzstyle{block} = [rectangle, draw=black, fill=blue!10, text width=6cm, text centered, rounded corners, minimum height=1cm]
+\tikzstyle{arrow} = [thick, ->, >=Stealth]
+
+\usepackage[
+    type={CC},
+    modifier={by},
+    version={4.0},
+]{doclicense}
+\definecolor{mycustomcolor}{RGB}{102, 153, 0}
+
+\lstdefinestyle{general}{
+  language={},                     % No language highlighting
+  basicstyle=\scriptsize\ttfamily, % Smaller font for compact printing
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  columns=fullflexible,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  keywordstyle=\normalfont,       % No special keyword styling
+  commentstyle=\normalfont,       % No special comment styling
+  stringstyle=\normalfont,        % No special string styling
+  identifierstyle=\normalfont     % No special identifier styling
+}
+
+
+
+\lstdefinestyle{cpp}{
+  language=C++,
+  basicstyle=\scriptsize\ttfamily,
+  backgroundcolor=\color{black!5},
+  keywordstyle=\color{blue},
+  commentstyle=\color{mycustomcolor},
+  stringstyle=\color{red},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,                  % Slightly reduced to save space
+  frame=single,
+  tabsize=2,
+  breaklines=true,
+  showspaces=false,
+  showstringspaces=false,
+  captionpos=b
+}
+
+
+\begin{document}
+\title{
+    \textcolor{black}{Namaste, 3D Graphics World!} \\
+    \large \textnormal{\textcolor{black}{Notes for writing a software rasterizer from scratch}}
+}
+\author{Manoj M J \\ \\Version 0.1 \\}
+\date{June-28-2025}
+
+
+\maketitle
+
+\vspace*{-4em}
+% \vfill % Pushes the following content to the bottom of the page
+\doclicenseThis
+
+\vspace{1em}
+
+\noindent
+\textit{No endorsement of derivative works is implied.}
+
+\pagenumbering{roman}
+\clearpage
+
+
+%\frontmatter
+\tableofcontents
+\newpage
+
+\mainmatter
+\pagenumbering{arabic}
+\include{ch01-introduction}
+\include{ch02-primer}
+\include{ch03-namaste3d}
+\include{ch04-drawing-primitives}
+\include{ch05-points-rendering}
+\include{ch06-wireframe-rendering}
+\include{ch07-color-filling}
+\include{ch08-texturing}
+\include{ch09-depth-buffering}
+\include{ch10-lighting-and-shading}
+\include{ch11-scene-parsing}
+\include{ch12-what-to-do-next}
+\include{references}
+\include{license-information}
+\end{document} 

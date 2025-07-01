@@ -1,0 +1,23 @@
+\chapter{Wireframe Rendering}
+\section{Problem}
+The scene and interaction is the same as the previous chapter except that the output we need is the outline of the triangles in the model.
+\section{Solution}
+We have to modify the Mesh::LoadMesh(...) so that we can load points and triangles. Also, we need to modify the Rasterizer::RenderMesh(...) so that the loop in it iterates triangles. In the last step, edges of the triangle are drawn using DrawLine(...) function available in the framework.
+
+\section{The pipeline}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+     \item Do the following for each triangle in the mesh
+    \item Pre-Multiply the triangle vertices with PVM matrix
+    \item Clip each triangle to get clipped list
+    \item For each clipped triangle do the following
+    \item Do perspective divide
+    \item Do viewport transformation
+    \item Draw lines connecting the vertices in the screen space
+\end{enumerate}
+
+\section{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices, we only interpolate position.
+\clearpage 

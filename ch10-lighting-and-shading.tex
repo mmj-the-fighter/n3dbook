@@ -1,0 +1,45 @@
+\chapter{Lighting and Shading}
+\section{Problem}
+Implement vertex lighting and Gourad shading for the cube with texture.
+\section{Solution}
+Calculate the normal matrix as the transpose of the inverse of model veiw matrix at frame start. Use it for calculating the vertex colors. In the rasterization routines interpolate vertex colors.
+\section{Representation of Light}
+We specify the point light with a world space coordinate, an ambient color component and diffuse color component. 
+\section{Representation of Material}
+We specify the material with two reflectivity vectors. One for diffuse and the other for ambient light component. Each element of the vector should be between zero and one.
+\section{Attenuation}
+The light intensity falls on a surface is inversely proportional to the square of the distance between the light and the surface. We use the following formula for calculation of attenuation.
+\[
+    A = \frac{1}{c_1 + c_2\cdot d + c_3 \cdot d^2}
+\]
+where $d$ is the distance between the light source and surface,\\
+$c_1$, $c_2$, and $c_3$ are constants.
+
+\section{Viewspace Lighting}
+The following are the steps for calculating the color reflected by vertex due to material, point light, and vertex normal.
+\subsection{Steps}
+\begin{enumerate}
+    \item VertexColor = ambientLight * ambientMaterial
+    \item Convert objec space vertex normal to view space ( N )
+    \item Calculate normalized N (NHat)
+    \item Convert light position to view space 
+    \item Calculate Light Direction L = viewspace light position - vertex position
+	\item Calculate normalized L (LHat)
+	\item Calculate nDotL = dot product of NHat and LHat
+	\item if (nDotL $>$ 0) do the following
+	\item VertexColor += diffuseMaterial * nDotL * diffuseLight;
+	\item VertexColor *= LightAttenuation calcuated from L; 
+\end{enumerate}
+\section{Gourad Shading}
+At perspective-rasterization-function we interpolate the vertex colors using perspective correct barycentric interpolation add it to the texel values obtained in the similar way. 
+
+At orthographic-rasterization-function we interpolate the vertex colors and texture coordinates in the normal way.
+\section{Pipeline}
+Please refer the pipeline diagram in the third chapter.
+\section{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices,  we interpolate position, color and texture coordinates. Note that this is normal linear interpolation. Lack of clipping of color can cause incorrect lighting and shading.
+\clearpage
+
+
+
+

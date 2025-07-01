@@ -1,0 +1,20 @@
+\chapter{Depth Buffering}
+\section{Normal Depth Buffering}
+\subsection{Problem}
+Draw a cube and inside it draw another small cube, in a convincing way, when the orthographic camera is used. The cubes must be textured. Lack of depth buffering makes far objects rendered in front of near objects. 
+\subsection{Solution}
+It's the case of drawing two meshes. First, draw the bigger cube. Then make a composite matrix of translation, rotation and reduced scale. Apply the composite matrix as the model matrix and draw the cube again. Use a seperate buffer to store the depth. That can be a floating point number array. Clear it to maximum float value at the beginning of the frame. In the rasterizer function for orthographic camera, update the pixel only if the interpolated $z$ value is less than the stored depth value for that pixel. If the depth test passes update the depth with the interpolated $z$ value.
+\subsection{Pipeline}
+The same pipeline as the pipeline of perspective correct texturing. We just add the depth check in orthographic-rasterize-vertices routine.
+\section{Inverse W-Buffering}
+\subsection{Problem}
+Draw a cube and inside it draw another small cube, in convincing way, when perspective camera is used. The cubes must be textured. And depth buffering technique should be optimized.
+\subsection{Solution}
+The cubes are drawn like we did in the previous solution. At frame start the depth buffer must be cleared with with zero. In the rasterizer function for perspective camera, update the pixel only if the interpolated $\frac{1}{w}$ value is greater than the stored depth value for that pixel. And we update  $\frac{1}{w}$ as the depth of the pixel.
+Inverse w-buffering is preferred here, since anyway we have to calculate the interpolated $\frac{1}{w}$ for perspective correct interpolation. So we can reuse it, without calculating interpolated $z$.
+\subsection{Pipeline}
+The same pipeline as the pipeline of perspective correct texturing. We just add the depth check in perspective-rasterize-vertices routine.
+\section{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices,  we interpolate position and texture coordinates. Note that this is normal linear interpolation.
+
+\clearpage

@@ -1,0 +1,145 @@
+\chapter{Scene Parsing}
+\section{Problem}
+The user should be able to compose a scene by specifying the parameters for perspective projection, orthographic projection, camera view, mesh file names, texture file names, materials, point light definitions, geometric object definitions supporting parameters including scale, rotation, translation, object file used and texture file used. The view frustum culling technique must be employed to reduce load to the renderer.
+\section{Solution}
+Make the scene text file according to the file format of your choice. Read the parameters. Make geometric objects list. Load meshes and textures necessary for the geometric object list. Load a resource only once and only if it is necessary. You can employ a resource loader with caching for that purpose. Give the geometric list objects available for other modules to iterate and render.
+\section{Scene File Format}
+The following a scene script in our custom language. It builds a scene by two boxes and and character mesh. The parser for this can be easily built by reading strings delimited by space. 
+\lstset{style=general}
+\begin{lstlisting}
+projection_begin
+id 0
+perspective 45 1 2000
+ortho -2 2 -2 2 -20 200
+projection_end
+
+projection_begin
+id 1
+perspective 32 10 5000
+ortho -2.4 2.4 -2.4 2.4 -100.003 1000.0
+projection_end
+
+view_begin
+id 0
+eye 0 2 10
+at 0 2 0
+up 0 1 0
+view_end
+
+mesh_begin
+id 0
+filename "../res/cube.obj"
+scale 1 1 1
+mesh_end
+
+mesh_begin
+id 1
+filename "../res/suzanne.obj"
+scale 1 1 1
+mesh_end
+
+mesh_begin
+id 2
+filename "../res/plane.obj"
+scale 20 1 20
+mesh_end
+
+texture_begin
+id 0
+filename "../res/crate.png"
+texture_end
+
+texture_begin
+id 1
+filename "../res/lena_color.png"
+texture_end
+
+texture_begin
+id 2
+filename "../res/grass.png"
+texture_end
+
+material_begin
+id 0
+ambient 0.1 0.2 0.4
+diffuse 0.1 0.2 0.4
+material_end
+
+point_light_begin
+id 0
+ambient 20 20 20
+diffuse 0 32 192
+trans 0 0 10
+point_light_end
+
+# monkey with crate texture
+geom_object_begin
+id 0
+mesh_id 1
+texture_id 0
+material_id 0
+scale 1 1 1
+rot	0 0 0
+trans 0 0 0
+parent_id -1
+geom_object_end
+
+# cube with crate texture
+geom_object_begin
+id 1
+mesh_id 0
+texture_id 0
+material_id 0
+scale 1 1 1
+rot	0 4 0
+trans 3 0 15
+parent_id -1
+geom_object_end
+
+# cube with lena texture
+geom_object_begin
+id 2
+mesh_id 0
+texture_id 1
+material_id 0
+scale 1 1 1
+rot	0 0 0
+trans 0 8 0
+parent_id -1
+geom_object_end
+
+
+# plane with grass texture
+geom_object_begin
+id 3
+mesh_id 2
+texture_id 2
+material_id 0
+scale 1 1 1
+rot	0 0 0
+trans 0 0 0
+parent_id -1
+geom_object_end
+
+initializer_begin
+projection_id 0
+view_id 0
+point_light_id 0
+initializer_end
+\end{lstlisting}
+\section{View Frustum Culling}
+Calculate the bounding box and bounding sphere of the mesh at load time. At render time of the object, transform its bounding sphere to view space, and  check if the bounding sphere is completely outside the camera viewing frustum. If it is so, do not render the object.
+\section{Calculating Viewing Frustum}
+We extract the view frustum clipping planes from the Projection matrix using the technique mentioned by Gil Gribb and Klaus Hartmann in their paper: ``Fast Extraction of Viewing Frustum Planes from the WorldView-Projection Matrix''
+\section{Sphere Inside / Outside Test}
+The signed distance from the mesh center in viewspace to the clipping plane is found. If it is behind the plane and is behind more than the radius of the bounding sphere we discard the mesh from rendering.
+\section{Pipeline}
+\begin{enumerate}
+    \item Build the scene object list by parsing the scene script
+    \item Get a mesh from the scene object list
+    \item Get updated matrices from the camera
+	\item Build the frustum planes
+	\item If vf culling fails for any frustum plane, discard the mesh 
+    \item Continue the pipeline for lighting and shading example
+\end{enumerate}
+\clearpage

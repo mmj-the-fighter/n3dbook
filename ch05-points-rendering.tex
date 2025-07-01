@@ -1,0 +1,46 @@
+\chapter{Points Rendering}
+\section{Problem}
+Our scene is a rotating cube and a movable camera. The cube mesh is provided in the res folder of the sample code. The output we need is interactive pictures of the cube corners drawn in red on a black background with cube animation, perspective foreshortening, and correct clipping.
+
+\section{Solution}
+First, we have to decide on the mesh format. Since we only care about points now, each mesh is an array of 3D vectors. In the Mesh::LoadMesh(...) routine, we only load the points from the 3D model.
+
+To animate the model, we make the rotation matrix about Y-axis from an angle, and the angle is incremented, the rotation matrix is used as the model matrix for rendering the cube. This happens in every frame.
+
+The camera class controls the update of view and projection matrices. And it is called while handling input. If you make the mistake of placing camera where the object cannot be seen, you will get the empty screen output.
+
+In the initialization stage of the application, we can set the viewport. 
+
+\section{The pipeline}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each point in the mesh
+    \item Pre-Multiply it with PVM matrix
+    \item Do clipping of the point
+    \item Do perspective divide
+    \item Do viewport transformation
+    \item Draw pixel of the resulting point
+\end{enumerate}
+
+\section{Clipping}
+In point clipping, we discard a point $p$ from rendering, if any of the following is satisfied.
+\begin{equation}
+\begin{aligned}
+p.x &> p.w\\
+p.x &< -p.w\\
+p.y &> p.w\\
+p.y &< -p.w\\
+p.z &> p.w\\
+p.z &< -p.w
+\end{aligned}
+\end{equation}
+
+Lack of clipping can cause the following anomalies
+\begin{enumerate}
+ \item Abrupt program termination 
+ \item Inverted rendered images
+\end{enumerate}
+
+\clearpage 

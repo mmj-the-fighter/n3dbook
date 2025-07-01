@@ -1,0 +1,45 @@
+\chapter{Color Filling}
+\section{Solid Color}
+\subsection{Problem}
+The scene and interaction are the same as the previous chapter except that the output we need is the color filling the triangles in the model.
+\subsection{Solution}
+We have to modify the MeshVertex and SwrVertex strutures to add color element. After Mesh::LoadMesh(...) we have to define random color for each vertex. Also, we need to modify the Rasterizer::RenderMesh(...) so that at the end of the loop it should call a function Rasterize(...) which takes three vertices as input. The function will calculate the bounding box of the three vertices and will try to plot color for the points inside the bounding box which are inside the triangle formed by the vertices. The plotting color is the first vertex's color.
+\subsection{The pipeline}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each triangle in the mesh
+    \item Pre-Multiply the triangle vertices with PVM matrix
+    \item Clip each triangle to get clipped list
+    \item For each clipped triangle do the following
+    \item Do perspective divide
+    \item Do viewport transformation
+    \item Fill the triangle with the first vertex color
+\end{enumerate}
+\subsection{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices, we only interpolate position. And the color of the first vertex is copied to all other two vertices.
+
+\section{Color Interpolation}
+\subsection{Problem}
+This time, instead of a constant color, we interpolate vertex colors at each point inside triangle.
+\subsection{Solution}
+This time, the plotting color will be determined by barycentric interpolation of the the vertex colors. 
+\subsection{The pipeline}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each triangle in the mesh
+    \item Pre-Multiply the triangle vertices with PVM matrix
+    \item Clip each triangle to get a clipped list
+    \item For each clipped list do the following
+    \item Do perspective divide
+    \item Do viewport transformation
+    \item Fill the triangle with the barycentric interpolation
+\end{enumerate}
+
+\subsection{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices,  we interpolate position and color attributes.
+
+\clearpage 

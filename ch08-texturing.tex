@@ -1,0 +1,64 @@
+\chapter{Texturing}
+\section{Linear}
+\subsection{Problem}
+This time, instead of interpolating vertex colors, we need to do the same for texture coordinates. And texture elements must be sampled using the interpolated texture coordinates. The texturing does not have to be convincing.
+
+\subsection{Solution}
+This time the plotting color will be determined by barycentric interpolation of the the texture coordinates. The texture coordinates are then simply clamped from 0 to 1, and mapped to textureWidth - 1 and textureHeight - 1 to get the pixel values. The error in clamping might result rendering artifacts (e.g. extra pixels on the boundary of triangles). Since the texture coordinates are not interpolated in perspective correct way, the texture will appear distorted along the triangle faces when perspective projection is used. For orthographic camera, no distortion will be there.
+
+\subsection{Pipeline}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each triangle in the mesh
+	\item Pre-Multiply the triangle vertices with PVM matrix
+	\item Clip each triangle to get a clipped list
+	\item Do perspective divide
+	\item Do viewport transformation
+	\item Get interpolated texture coordinates (using barycentric interpolation)
+	\item Get texel using the texture coordinates
+	\item Fill the triangle using such texels
+\end{enumerate}
+
+\section{Perspective Correct}
+\subsection{Problem}
+This time, the texturing must be convincing for all types of cameras.
+
+\subsection{Solution}
+The plotting color will be determined by perspective correct barycentric interpolation of the the texture coordinates when perspective camera is used. And it is determined by normal barycentric interpolation when orthographic camera is used.
+
+\subsection{Pipeline for perspective camera}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each triangle in the mesh
+	\item Pre-Multiply the triangle vertices with PVM matrix
+	\item Clip each triangle to get a clipped list
+	\item Do perspective divide
+	\item Do viewport transformation
+	\item Get interpolated texture coordinates (using perspective correct barycentric interpolation)
+	\item Get texel using the texture coordinates
+	\item Fill the triangle using such texels
+\end{enumerate}
+
+\subsection{Pipeline for orthographic camera}
+\begin{enumerate}
+    \item Get updated model matrix
+    \item Get updated matrices from camera
+    \item Concatenate Projection, View and Model matrices (PVM)
+    \item Do the following for each triangle in the mesh
+	\item Pre-Multiply the triangle vertices with PVM matrix
+	\item Clip each triangle to get a clipped list
+	\item Do perspective divide
+	\item Do viewport transformation
+	\item Get interpolated texture coordinates (using barycentric interpolation)
+	\item Get texel using the texture coordinates
+	\item Fill the triangle using such texels
+\end{enumerate}
+
+\section{Clipping}
+The clipping process is like we discussed in the primer chapter. When we interpolate the vertices,  we interpolate position and texture coordinates. Note that this is normal linear interpolation.
+
+\clearpage 

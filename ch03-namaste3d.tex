@@ -1,0 +1,63 @@
+\chapter{Namaste 3D Engine}
+\section{Introduction}
+We will use a 2D framework and develop the 3D engine and demo using C++. The engine itself will possess the capability to render meshes incorporating point lights, perspective-correct texturing, and Gourad shading. Additionally, we will perform 3D clipping in homogeneous coordinates, and implement two types of depth-buffering.  
+\section{Our 2D Framework}
+We use Spinach framework for 2D rendering. It is a framework for experiments like software rasterization and is done using C++ and SDL3. 
+
+Spinach is available at:
+
+\url{https://github.com/mmj-the-fighter/Spinach}
+
+Spinach has the following features that help us to easily make rasterizers.
+\begin{enumerate}
+	\item Easy setup
+    \item Availability of windowing system interface through SDL3
+    \item Callbacks for rendering and handling input
+    \item Image class for loading and storing texture data
+    \item SetPixel, DrawLine, Clear, DrawImage and DrawText functions available in the Canvas class.
+\end{enumerate}
+We set the target of the rasterizer as the canvas of the SpinachCore object we make. During rasterization, we use that target. 
+
+\section{Our Graphics Pipeline}
+The pipeline I describe here is applicable only to the 12th chapter. For the rest of the chapters, the pipeline is similar.
+
+A graphics pipeline a set of steps that must be done to the vertices in order to render them as pixels to the frame buffer. The canvas object is our framebuffer. We initiate the pipeline by calling the RenderMesh function. The render mesh function starts a loop of triangles in the mesh. Each vertex in the triangle is in object space. And are of type vector-3. It is converted to vector-4, and multiplied by the modelview matrix. Object space normals are converted to view space normals and vertex colors are calculated. Then the vertices are multiplied by the projection matrix. We then send the triangle to the clipper. The clipper clips the triangle against each of the six clipping planes of the frustum. It is done in a homogeneous coordinate space.
+
+The clipper may split the triangle to new triangles or return the same triangle. Those triangles are passed to the next stage. Each vertex of the triangle undergoes the perspective divison and the viewport transform. The inverse of the w coordinate obtained after clipping is stored as the w coordinate of each vertex \footnote{This is for optimization} and passed to the rasterization stage.
+
+In the rasterization stage, barycentric coordinates are calculated, texture coordinates, depth values, and vertex colors are interpolated correctly according to the camera used. If the interpolated depth value does not pass the depth test, the depth buffer and frame buffer are not updated. The pixel value is the sum of the interpolated vertex color and the texture element value obtained from the interpolated texture coordinates.
+
+\section{The Pipeline Diagram}
+
+\tikzset{
+  block/.style = {rectangle, draw, text width=4cm, align=center, minimum height=1cm},
+  arrow/.style = {thick,->,>=stealth}
+}
+
+\begin{tikzpicture}[node distance=1.5cm and 2cm, scale=0.20]
+  \node (loop1) [block, fill=orange!20] {Get object space triangle:};    
+  \node (model) [block, below=of loop1] {Modeling Transform};
+  \node (view) [block, right=of model] {View Transform};
+  \node (normal) [block, below=of view] {Normal Transform};
+  \node (lighting) [block, left=of normal] {Vertex Lighting};
+  \node (projection) [block, below=of lighting] {Projection Transform};
+  \node (clipping) [block, right=of projection] {Clipping};
+
+  \node (loop2) [block, below=of clipping, fill=orange!20] {Get clipped triangle:};
+  \node (perspective) [block, left=of loop2] {Perspective Division};
+  \node (viewport) [block, below=of perspective] {Viewport Transform};
+  \node (raster) [block, right=of viewport] {Rasterization: depth buffering, interpolation, color+texture};
+
+  \draw [arrow] (loop1) -- (model);
+  \draw [arrow] (model) -- (view);
+  \draw [arrow] (view) -- (normal);
+  \draw [arrow] (normal) -- (lighting);
+  \draw [arrow] (lighting) -- (projection);
+  \draw [arrow] (projection) -- (clipping);
+  \draw [arrow] (clipping) -- (loop2);
+  \draw [arrow] (loop2) -- (perspective);
+  \draw [arrow] (perspective) -- (viewport);
+  \draw [arrow] (viewport) -- (raster);
+\end{tikzpicture}
+
+\clearpage
