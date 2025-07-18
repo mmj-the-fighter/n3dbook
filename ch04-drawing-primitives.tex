@@ -1,6 +1,6 @@
 \chapter{Drawing Primitives}
 \section{Drawing a Pixel}
-Each pixel is represented in the screeen buffer as a concatenation of byte values for blue, green, red and alpha channels of the pixel colour. Thus the format is B8G8R8A8. The number of bytes required for one row of pixels is called pitch. The screen coordinates originate from top-left. X axis goes towards right and Y axis goes towards down. The pixel rows from top to bottom are stored linearly in the screen buffer.We can actually make an unsigned integer of the blue, green, red and alpha components and store it in one instruction. And that is actually faster way to set pixel. But we chose this for simplicity.
+Each pixel is represented in the screeen buffer as a concatenation of byte(8 bits) values for blue, green, red and alpha channels of the pixel colour. Thus the format is B8G8R8A8. The number of bytes required for one row of pixels is called pitch. The screen coordinates originate from top-left. X axis goes towards right and Y axis goes towards down. The pixel rows from top to bottom are stored linearly in the screen buffer.We can actually make an unsigned integer of the blue, green, red and alpha components and store it in one instruction. And that is actually faster way to set pixel. But we chose this for simplicity.
 
 The draw pixel code in C++ is:\\
 \lstset{style=cpp}

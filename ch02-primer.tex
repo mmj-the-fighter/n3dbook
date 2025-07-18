@@ -498,9 +498,10 @@ Attib_P = \alpha \cdot Attrib_A + \beta \cdot Attrib_B + \gamma \cdot Attrib_C
 
 
 \section{Camera}
-Modifying the camera parameters affects the view matrix and projection matrix calculations. This will cause the renderer to render different parts of the scene with different perspectives. When done interactively based on user input, it creates an experience of exploring a virtual world.
+The camera is like a tiny window through we which see the virtual world. 
+The modification of the camera parameters viz., eye, target, look direction, field of view angle, near plane distance, far plane distance etc., affects the view matrix and projection matrix calculations. This will cause the renderer to render different parts of the scene. When done interactively based on user input, it creates an experience of exploring  the virtual world.
 \subsection{Viewing}
-The camera has a position in world space and it has local axes and euler angles for representing the camera orientation. The camera direction is determined by the camera target point. \footnote{The camera is in a right handed coordinate system, we see the world from the negative axis of the camera. Therefore we calculate the target to eye vector and use it for calculating the $+z$ axis of the camera.} The camera can be translated and or rotated.  When we apply the translation we apply the same amount of translation to both the camera position and the target point and the view matrix is recalculated. To rotate the camera, we modify the euler angles and then the view matrix is recalculated from euler angles. Another way to rotate the target point and recalculate the view matrix.
+The camera has a position in world space and it has local axes and Euler angles\footnote{Euler angles are the three rotations about the mutually perpendicular local axes. They are called yaw, pitch and roll} for representing the camera orientation. The camera direction is determined by the camera target point. \footnote{The camera is in a right handed coordinate system, we see the world from the negative axis of the camera. Therefore we calculate the target to eye vector and use it for calculating the $+z$ axis of the camera.} The camera can be translated and or rotated.  When we apply the translation we apply the same amount of translation to both the camera position and the target point and the view matrix is recalculated. To rotate the camera, we modify the euler angles and then the view matrix is recalculated from euler angles. Another way to rotate the target point and recalculate the view matrix.
 
 Given the camera position $E$ (also called `eye'), the target point $T$ (also called `at'), and the camera up vector $U$, we compute the view matrix as follows: \\
 N.B.: All points are world space coordinates.\\
@@ -661,7 +662,7 @@ By analyzing the result we got, we can see that the orthographic projection tran
 Perspective projection is the method used by the rendering engines to make near objects appear big and distant objects appear small. The effect is called perspective foreshortening. The goal of the perspective transform and the subsequent perspective divide operation is to do the following.
 \begin{enumerate}
 \item Perspective projection
-\item Mapping view coordinates to NDC
+\item Mapping view coordinates to NDC\footnote{NDC stands for normalized device coordinates, for which $x \in [-1,+1]$, $y \in [-1,+1]$ and $z \in [-1,+1]$}
 \end{enumerate}
 Here we will see how we can derive a perspective transform.
 In the program, we specify the viewing volume using the following parameters.
@@ -919,12 +920,9 @@ The clipping algorithm use edge-by-edge intersection of the triangle with all th
 The clipping planse are:
 \begin{equation}
 \begin{aligned}
-x  &= -w\\
-x  &= +w\\ 
-y  &= -w\\
-y  &= +w\\
-z  &= -w\\
-z  &= +w
+x &= -w \quad & x &= +w \\
+y &= -w \quad & y &= +w \\
+z &= -w \quad & z &= +w
 \end{aligned}
 \label{eq:clipping_planes}
 \end{equation}
@@ -1200,9 +1198,10 @@ By the deduction technique used in the previous sections, we can find the requir
 \end{bmatrix}
 \end{equation}
 \section{Hidden Surface Removal}
-To render objects convincingly and optimize the process, we use back face culling and depth buffering.
+To render objects convincingly and to optimize the process, we use depth buffering and back face culling. If depth buffering is not used, we always have to render objects starting from distant objects to the near objects. This will introduce sorting overhead, and even with sorting of triangles some types of objects can't be rendered convincingly. If backface culling is not used, we always have to rasterize triangles we won't see anyway, thus adding the overhead.
 \subsection{Backface Culling}
-After converting a triangle to screen space, we calculate its signed area and check if it is less than or equal to zero. ( area == 0 means, triangle is made up of collinear points). If it is so, the triangle is not rendered. This is possible because when we make the mesh, we specify vertices of each triangle in counter-clockwise order.
+By not rendering faces that we don't see we can save processor cycles.
+After converting a triangle to screen space, we calculate its signed area and check if it is less than or equal to zero \footnote{area = 0 means, the triangle is made up of collinear points}. If it is so, the triangle is not rendered. This is valid because when we make the mesh, we specify vertices of each triangle in counter-clockwise order.And the triangles facing away from us will have signed area less than zero.
 \subsection{Depth Buffering}
 In addition to screen pixels, we store depth information for each pixel.
 We draw a pixel only if the pixel's depth is less than the stored depth for that pixel. We do two kinds of depth buffering with respect to two kinds of camera we have. When the scene is rendered with perspective cameara, we use inverse w-buffering and when the scene is rendered with orthographic camera, we use normal z-buffering.
