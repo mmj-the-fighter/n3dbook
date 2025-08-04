@@ -931,17 +931,24 @@ In the clipper, we use interpolation based on signed distances.
 
 There are four possibilities based on how many points of the triangle are inside or outside the halfspace of the clipping plane.
 
-\subsection{All 3 points outside}
-Triangle is fully outside, clipper copies no triangle to the output
 
-\subsection{All 3 points inside}
-Triangle is fully inside, clipper just copies the input triangle to the output
-
-\subsection{2 points outside, 1 point inside}
-Create a smaller triangle by the interpolation of the vertex attributes and add it to the output of the clipper.
-
-\subsection{1 point outside, 2 points outside}
-Create two smaller triangles by the interpolation of the vertex attributes and add them to the output of the clipper.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Case} & \textbf{Description} \\
+\hline
+All 3 points outside & Triangle is fully outside, clipper copies no triangle to the output \\
+\hline
+All 3 points inside & Triangle is fully inside, clipper just copies the input triangle to the output \\
+\hline
+2 points outside, 1 point inside & Create a smaller triangle by the interpolation of the vertex attributes and add it to the output of the clipper. \\
+\hline
+1 point outside, 2 points outside & Create two smaller triangles by the interpolation of the vertex attributes and add them to the output of the clipper. \\
+\hline
+\end{tabular}
+\caption{Triangle clipping cases}
+\end{table}
 
 \subsection{Finding the intersection}
 Let $A$ and $B$ be two points.
