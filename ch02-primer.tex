@@ -409,7 +409,7 @@ x = a + (b - a) \cdot f
 where $a$ is the initial value, $b$ is the final value, and $f$ is the interpolation factor.
 
 
-\subsection {Speeding up linear interpolation}
+\subsection {Speeding up Linear Interpolation}
 Consider the case of interpolating from one intensity value to another along a scanline. We can find the intensity at any point can be calculated by the following formula.
 \[ 
 I_x = I_1 + \frac{(I_2 - I_1)}{(x_2 - x_1)}  \cdot {(x-x_1)}
@@ -950,7 +950,7 @@ All 3 points inside & Triangle is fully inside, clipper just copies the input tr
 \caption{Triangle clipping cases}
 \end{table}
 
-\subsection{Finding the intersection}
+\subsection{Finding the Intersection}
 Let $A$ and $B$ be two points.
 Then an interpolated point between $A$ and $B$ is defined as,
 \begin{align*}
@@ -1036,9 +1036,9 @@ N = ((V \cdot M)^{-1})^T
 \end{equation}
 Since normals are direction vectors, only the upper-left \( 3 \times 3 \) submatrix of \( V \cdot M \) (i.e., the linear transformation without translation) should be used.
 
-\section{Viewport transform}
+\section{Viewport Transform}
 The goal of this transform is to convert normalized device coordinates (NDC) to screen coordinates. 
-\subsection{Transforming x}
+\subsection{Transforming X oordinates}
 
 
 \begin{figure}[h]
@@ -1099,7 +1099,7 @@ x' &= v_x + (x + 1) \cdot \frac{\text{width}}{2} \\
     x' = x \cdot \frac{\text{width}}{2} + v_x + \frac{\text{width}}{2} 
 \end{equation}
 
-\subsection{Transforming y}
+\subsection{Transforming Y Coordinates}
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}
@@ -1154,7 +1154,7 @@ y' &= v_y + height - (y + 1) \cdot \frac{\text{height}}{2} \\
 \begin{equation}
 y' = - y \cdot \frac{\text{height}}{2} + v_y + \frac{\text{height}}{2} \\    
 \end{equation}
-\subsection{Transforming \( z \)}
+\subsection{Transforming Z Coordinates}
 
 We need to transform NDC coordinates to depth in the interval \([0,\text{depth}_{\max}]\).  
 We can find the expression for transformation as:
@@ -1171,7 +1171,7 @@ z' &= 0 + (z + 1) \cdot \frac{\text{depth}_{\max}}{2} \\
 \begin{equation}
        z' = z \cdot \frac{\text{depth}_{\max}}{2} + \frac{\text{depth}_{\max}}{2}
 \end{equation}
-\subsection{Deriving viewport matrix}
+\subsection{Deriving Viewport Matrix}
 Using the results we obtained so far in this section, we can write the transformation equation as:
 \[
 \begin{bmatrix}
@@ -1215,7 +1215,8 @@ We draw a pixel only if the pixel's depth is less than the stored depth for that
 We get w from clip-space vertex, and we get z from screen-space vertex. 
 
 \section{3D Scene}
-Initially our 3D scene consists of a cube and a camera. We use a text based scene format. Later we will add more models.  [TODO]
+The 3D scene is a collection of descriptions of parameters for the camera, meshes, textures, lights, and geometric objects along with their initial modeling transforms. The hierarchical object relationship is out of scope for our book. We use a custom text format for the scene description, which is explained later. 
+
 \section{Rendering Problems}
 While making the renderers for the upcoming chapters, you might be facing many rendering problems like in the following list. We will describe how to solve each of them in the respective chapters.
 \vspace{1em} 
