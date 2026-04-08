@@ -8,4 +8,4 @@ This book touches enough parts of that to get the reader familiar with transform
 
 Each chapter is in the form of a problem and its solution presenting only necessary algorithm or code.
 
-The reader can make his own implementation and or read the accompanying source code.
+The reader can make his own implementation and or read the [accompanying source code](https://github.com/mmj-the-fighter/Namaste3D).
