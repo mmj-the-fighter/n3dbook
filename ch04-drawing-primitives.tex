@@ -5,21 +5,23 @@ Each pixel is represented in the screeen buffer as a concatenation of byte(8 bit
 The draw pixel code in C++ is:\\
 \lstset{style=cpp}
 \begin{lstlisting}
-
-/* Defined earlier in the code:
+/*
+Defined earlier in the code:
+...
 const int  channels  = 4;
 float pitch = width * channels;
+...
 */
 
-inline void SetPixel(int x, int y, int r, int g, int b) {
-	unsigned char* dstLoc 
-		= pixBuffer + pitch * y 
-		+ x * channels;
+inline void SetPixel(int x, int y, int r, int g, int b) 
+{
+	unsigned char* dstLoc = pixBuffer + pitch * y + x * channels;
 	*dstLoc++ = b;
 	*dstLoc++ = g;
 	*dstLoc++ = r;
 	*dstLoc = 255;
 }
+
 \end{lstlisting}
 \clearpage 
 
@@ -50,8 +52,7 @@ void Canvas::DrawLine(int x0, int y0, int x1, int y1)
 	{
 		int ix = static_cast<int>(x + 0.5f);
 		int iy = static_cast<int>(y + 0.5f);
-		unsigned char* dstLoc 
-			= pixBuffer + pitch * iy + ix * channels;
+		unsigned char* dstLoc = pixBuffer + pitch * iy + ix * channels;
 		*dstLoc++ = primaryColorB;
 		*dstLoc++ = primaryColorG;
 		*dstLoc++ = primaryColorR;
@@ -368,6 +369,6 @@ void Rasterizer::RasterizeVerticesPerspective(
 }
 \end{lstlisting}
 \section{Drawing a Mesh}
-Suppose we have a cube. How can we draw it? A cube has 6 quadrilatral faces. So it needs 12 triangle definitions and we just draw each triangle in a loop to render the cube. Similarly we can draw any mesh by iterating the triangles and drawing each of them by our specific rendering pipeline. But how do we load the Wavefront object file? I will tell you the memory format we need. You are requested to code the loader. We load all triangles serially in an std::vector of type  MeshVertex. In the final version, the MeshVertex is composed of position(vec3f), normal(vec3f) and texture coordinate (texcoord2f).
+Suppose we have a cube. How can we draw it? A cube has 6 quadrilateral faces. So it needs 12 triangle definitions and we just draw each triangle in a loop to render the cube. Similarly we can draw any mesh by iterating the triangles and drawing each of them by our specific rendering pipeline. But how do we load the Wavefront object file? I will tell you the memory format we need. You are requested to code the loader. We load all triangles serially in an std::vector of type  MeshVertex. In the final version, the MeshVertex is composed of position(vec3f), normal(vec3f) and texture coordinate (texcoord2f).
 
 \clearpage
