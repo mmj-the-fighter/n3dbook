@@ -201,8 +201,39 @@ That derivation is left as an exercise for the reader.
 
 
 \section{Homogeneous Representation}
-Homogeneous representation is a technique used to unify transformations, such as translation, rotation, scaling, and projection. Points and vectors are given an extra coordinate, denoted as $w$. The $w$ component of points will be 1, while that of vectors will be 0. Instead of $3 \times 3$ matrices, the transformations are represented using $4 \times 4$ matrices, which can be multiplied together. From now on, we use homogeneous representation to represent transformations.
+Homogeneous representation is a technique used to unify transformations, such as translation, rotation, scaling, and projection.  e.g. Normally a matrix of dimension $3 \times 3$ can be used to specify $3D$ rotation. If $P' = R_{\theta}P$ denotes the rotation of a point $P$ to $P'$, then by additionally including a translation $T$, the equation becomes
+\[
+P' = R_{\theta}P + T
+\]
+By adding a row $\{0,0,0,1\}$ and a column $\{t_x,t_y,t_z,1\}$ to $R_{\theta}$, and adding an element $1$ to $P$, we can write the whole equation as
+\[
+P' = MP
+\] 
+i.e.,
+\[
+\begin{bmatrix}
+x'\\
+y'\\
+z'\\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+r_{11} & r_{12} & r_{13} & t_x\\
+r_{21} & r_{22} & r_{23} & t_y\\
+r_{31} & r_{32} & r_{33} & t_z\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+z\\
+1
+\end{bmatrix}.
+\]
+Since vectors are formed by subtraction of points, the additional component of vectors is zero.  The fourth component of the homogeneous point is called $w$. When $w \neq 0,$, during an operation, we can divide each of the component by $w$ to make  it one. 
 \section{Derivation of Translation Matrix}
+From now on, we use $4 \times 4$ homogeneous representation to represent transformations.
 A translation transformation is like a black box with an input and an output. The processing element is the translation matrix. For translation, we already know the input and output. Our translation matrix should be a homogeneous matrix of the order $4\times4$. Therefore, we should specify input and output in homogeneous coordinates. Let a point \(A(x, y, z, 1)\) be translated to the point \(B(x+t_x, y+t_y, z+t_z, 1)\) by the translation matrix \(T\).
 The transformation equation is: \[T \cdot A = B \]
 
