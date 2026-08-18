@@ -1,17 +1,19 @@
 \chapter{Introduction}
-This book guides you through the step-by-step construction of a CPU based software rasterizer and is expected to be an introduction to real-time 3D graphics programmng. The prerequisites are: intermediate level C++ and basic mathematics ( trigonometry, co-ordinate geometry and linear algebra ).  
+This book guides you through the step-by-step construction of a CPU-based software rasterizer and is intended to be an introduction to real-time 3D graphics programming. The prerequisites are intermediate-level C++ and basic mathematics (trigonometry, coordinate geometry, and linear algebra).  
 
-Before 3D graphics accelerator chips were invented, software rendering was the norm. All parts of the 3D pipeline were implemented in software using CPU. We try to redo some aspects of that here in this book as a set of excersies and solutions. After finishing the book you will have a clear understanding of how real-time 3D engines work since we mainly go through the topics viz., transformations, viewing, projection, clipping, rasterization, texture mapping, lighting, shading and depth buffering. And that set of knowledge will help you while learning graphics APIs, rendering engines and game engines. 
+Before 3D graphics accelerator chips became widely available, software rendering was the norm. All parts of the 3D pipeline were implemented in software using the CPU. We try to recreate some aspects of that here in this book as a set of exercises and solutions. After finishing the book, you will have a clear understanding of how real-time 3D engines work since we mainly cover the following topics: transformations, viewing, projection, clipping, rasterization, texture mapping, lighting, shading, and depth buffering. This knowledge will also help you when learning graphics APIs, rendering engines, and game engines. In fact, several graphics programming roadmaps recommend building a rasterizer as one of the first things to learn.
 
-The sample code of each chapter is availabe at :
+In a simplified view of the GPU (Graphics Processing Unit), there are two kinds of processing units: vertex and pixel processing units. Vertex and pixel shaders are programs executed by these units. The user supplies the mesh data, vertex shaders, pixel shaders, textures, scene information, and other data for rendering. The graphics API is used to compile shaders into binaries targeted for a particular GPU architecture. Many vertex processing units operate on mesh vertex data by executing the vertex shader binary in parallel. The intermediate output goes through several stages and is eventually consumed by many pixel processing units executing the pixel shader binary in parallel. Very fast rendering of 3D models is possible with this setup. Compared with this, our software renderer cannot run highly complex scenes without losing interactive rendering speed. This is acceptable since our goal is to have an environment suitable for learning all parts of a basic 3D pipeline.
 
-\url{https://github.com/mmj-the-fighter/Namaste3D}. 
+The sample code for each chapter is available at:
 
-This pdf and older versions are available at:
+\url{https://github.com/mmj-the-fighter/Namaste3D}
 
-\url{https://github.com/mmj-the-fighter/n3dbook/releases}.
+This PDF and older versions are available at:
 
-You are requested to read the primer chapter first and try out your own solutions to each problem in the upcoming chapters.
+\url{https://github.com/mmj-the-fighter/n3dbook/releases}
+
+You are encouraged to read the primer chapter first and try out your own solutions to each problem in the upcoming chapters.
 
 
 
