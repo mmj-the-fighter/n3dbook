@@ -39,8 +39,8 @@ p.z &< -p.w
 
 Lack of clipping can cause the following anomalies
 \begin{enumerate}
- \item Abrupt program termination 
- \item Inverted rendered images
+ \item Abrupt program termination when the framebuffer is accessed out of bounds
+ \item Inverted rendered images when the object is behind the camera
 \end{enumerate}
 
 \clearpage 
